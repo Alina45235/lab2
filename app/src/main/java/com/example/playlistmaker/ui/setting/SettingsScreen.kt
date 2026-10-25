@@ -1,4 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.setting
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import android.content.Intent
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -34,9 +34,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.playlistmaker.R
 
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit = {}) {
+    // Контекст нужен для запуска Intent (системных действий)
     val context = LocalContext.current
 
     Column(
@@ -44,6 +46,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        // Шапка: стрелка "назад" + заголовок "Настройки"
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,7 +60,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .size(48.dp)
-                    .clickable { onBackClick() }
+                    .clickable { onBackClick() } // возврат на предыдущий экран
                     .padding(12.dp)
             )
             Text(
@@ -68,8 +71,10 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
             )
         }
 
+        // Состояние переключателя тёмной темы (логика пока не реализована)
         var darkTheme by remember { mutableStateOf(false) }
         Spacer(modifier = Modifier.height(16.dp)) // <-- Добавлен отступ
+        // Пункт "Тёмная тема" со свитчем
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,6 +94,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
             )
         }
 
+        // Пункт "Поделиться приложением" — открывает диалог выбора мессенджера
         SettingsItem(
             title = stringResource(R.string.settings_share_app),
             trailingIcon = Icons.Filled.Share,
@@ -101,6 +107,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
             }
         )
 
+        // Пункт "Написать в поддержку" — открывает почтовый клиент с предзаполненными полями
         SettingsItem(
             title = stringResource(R.string.settings_write_support),
             trailingIcon = Icons.Filled.SupportAgent,
@@ -115,6 +122,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
             }
         )
 
+        // Пункт "Пользовательское соглашение" — открывает браузер по ссылке
         SettingsItem(
             title = stringResource(R.string.settings_user_agreement),
             trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
@@ -128,6 +136,7 @@ fun SettingsScreen(onBackClick: () -> Unit = {}) {
     }
 }
 
+// Переиспользуемый элемент списка настроек: текст + иконка справа
 @Composable
 fun SettingsItem(
     title: String,
@@ -138,7 +147,7 @@ fun SettingsItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(61.dp)
-            .clickable { onClick() }
+            .clickable { onClick() } // вся строка кликабельна
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -146,7 +155,7 @@ fun SettingsItem(
             text = title,
             color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f) // текст занимает всё свободное место
         )
         Icon(
             imageVector = trailingIcon,
